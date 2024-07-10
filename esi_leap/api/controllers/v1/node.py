@@ -21,7 +21,7 @@ import wsmeext.pecan as wsme_pecan
 from esi_leap.api.controllers import base
 from esi_leap.api.controllers import types
 from esi_leap.common import ironic
-from esi_leap.common import keystone
+from esi_leap.common.idp import idp
 from esi_leap.common import statuses
 import esi_leap.conf
 from esi_leap.objects import lease as lease_obj
@@ -71,9 +71,9 @@ class NodesController(rest.RestController):
         context = pecan.request.context
 
         if owner is not None:
-            owner = keystone.get_project_uuid_from_ident(owner)
+            owner = idp.get_project_uuid_from_ident(owner)
         if lessee is not None:
-            lessee = keystone.get_project_uuid_from_ident(lessee)
+            lessee = idp.get_project_uuid_from_ident(lessee)
 
         filter_args = {
             'resource_class': resource_class,
@@ -89,7 +89,7 @@ class NodesController(rest.RestController):
                 k: v for k, v in filter_args.items() if v is not None
             }
             f1 = executor.submit(ironic.get_node_list, context, **filter_args)
-            f2 = executor.submit(keystone.get_project_list)
+            f2 = executor.submit(idp.get_project_list)
             nodes = f1.result()
             project_list = f2.result()
 
@@ -126,8 +126,8 @@ class NodesController(rest.RestController):
                      properties=ironic.get_condensed_properties(
                          node.properties),
                      maintenance=str(node.maintenance),
-                     owner=keystone.get_project_name(node.owner, project_list),
-                     lessee=keystone.get_project_name(node.lessee,
+                     owner=idp.get_project_name(node.owner, project_list),
+                     lessee=idp.get_project_name(node.lessee,
                                                       project_list),
                      future_offers=future_offers,
                      future_leases=f_lease_uuids)
