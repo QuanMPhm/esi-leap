@@ -13,7 +13,7 @@
 import mock
 
 from esi_leap.common import exception as e
-from esi_leap.common import keystone
+from esi_leap.common.idp.keystoneIDP import KeystoneIDP
 from esi_leap.tests import base
 
 
@@ -28,61 +28,61 @@ class KeystoneTestCase(base.TestCase):
     def test_get_project_uuid_from_ident_uuid(self, mock_iul):
         mock_iul.return_value = True
 
-        project_uuid = keystone.get_project_uuid_from_ident("uuid")
+        project_uuid = KeystoneIDP().get_project_uuid_from_ident("uuid")
 
         mock_iul.assert_called_once_with("uuid")
         self.assertEqual("uuid", project_uuid)
 
-    @mock.patch.object(keystone, "get_keystone_client", autospec=True)
+    @mock.patch.object(KeystoneIDP, "get_keystone_client", autospec=True)
     @mock.patch("oslo_utils.uuidutils.is_uuid_like")
     def test_get_project_uuid_from_ident_name(self, mock_iul, mock_keystone):
         mock_iul.return_value = False
         mock_keystone.return_value.projects.list.return_value = [FakeProject()]
 
-        project_uuid = keystone.get_project_uuid_from_ident("name")
+        project_uuid = KeystoneIDP().get_project_uuid_from_ident("name")
 
         mock_iul.assert_called_once_with("name")
         self.assertEqual("uuid", project_uuid)
         mock_keystone.return_value.projects.list.assert_called_once_with(name="name")
 
-    @mock.patch.object(keystone, "get_keystone_client", autospec=True)
+    @mock.patch.object(KeystoneIDP, "get_keystone_client", autospec=True)
     @mock.patch("oslo_utils.uuidutils.is_uuid_like")
     def test_get_project_uuid_from_ident_name_no_match(self, mock_iul, mock_keystone):
         mock_iul.return_value = False
         mock_keystone.return_value.projects.list.return_value = []
 
         self.assertRaises(
-            e.ProjectNoSuchName, keystone.get_project_uuid_from_ident, "name"
+            e.ProjectNoSuchName, KeystoneIDP().get_project_uuid_from_ident, "name"
         )
 
         mock_iul.assert_called_once_with("name")
         mock_keystone.return_value.projects.list.assert_called_once_with(name="name")
 
-    @mock.patch.object(keystone, "get_keystone_client", autospec=True)
+    @mock.patch.object(KeystoneIDP, "get_keystone_client", autospec=True)
     def test_get_project_name_no_list(self, mock_keystone):
         mock_keystone.return_value.projects.get.return_value = FakeProject()
 
-        project_name = keystone.get_project_name("12345")
+        project_name = KeystoneIDP().get_project_name("12345")
 
         self.assertEqual("name", project_name)
 
-    @mock.patch.object(keystone, "get_keystone_client", autospec=True)
+    @mock.patch.object(KeystoneIDP, "get_keystone_client", autospec=True)
     def test_get_project_name_list(self, mock_keystone):
         project_list = [FakeProject()]
-        project_name = keystone.get_project_name("uuid", project_list)
+        project_name = KeystoneIDP().get_project_name("uuid", project_list)
 
         self.assertEqual("name", project_name)
 
-    @mock.patch.object(keystone, "get_keystone_client", autospec=True)
+    @mock.patch.object(KeystoneIDP, "get_keystone_client", autospec=True)
     def test_get_project_name_list_no_match(self, mock_keystone):
         project_list = [FakeProject()]
-        project_name = keystone.get_project_name("uuid2", project_list)
+        project_name = KeystoneIDP().get_project_name("uuid2", project_list)
 
         self.assertEqual("", project_name)
 
-    @mock.patch.object(keystone, "get_keystone_client", autospec=True)
+    @mock.patch.object(KeystoneIDP, "get_keystone_client", autospec=True)
     def test_get_project_name_none(self, mock_keystone):
         project_list = [FakeProject()]
-        project_name = keystone.get_project_name(None, project_list)
+        project_name = KeystoneIDP().get_project_name(None, project_list)
 
         self.assertEqual("", project_name)
