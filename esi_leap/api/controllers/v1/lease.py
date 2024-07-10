@@ -88,7 +88,7 @@ class LeasesController(rest.RestController):
             request, "esi_leap:lease:get", lease_id
         )
 
-        return Lease(**utils.lease_get_dict_with_added_info(lease))
+        return Lease(**self._lease_get_dict_with_added_info(lease))
 
     @wsme_pecan.wsexpose(
         LeaseCollection,
@@ -163,7 +163,7 @@ class LeasesController(rest.RestController):
 
             leases_with_added_info = [
                 Lease(
-                    **utils.lease_get_dict_with_added_info(
+                    **self._lease_get_dict_with_added_info(
                         lease, project_list, node_list
                     )
                 )
@@ -233,7 +233,7 @@ class LeasesController(rest.RestController):
 
         lease = lease_obj.Lease(**lease_dict)
         lease.create(request)
-        return Lease(**utils.lease_get_dict_with_added_info(lease))
+        return Lease(**self._lease_get_dict_with_added_info(lease))
 
     @wsme_pecan.wsexpose(Lease, wtypes.text, body={wtypes.text: wtypes.text})
     def patch(self, lease_uuid, patch=None):
@@ -254,7 +254,7 @@ class LeasesController(rest.RestController):
         updates = {"end_time": new_end_time}
         lease.update(updates, request)
 
-        return Lease(**utils.lease_get_dict_with_added_info(lease))
+        return Lease(**self._lease_get_dict_with_added_info(lease))
 
     @wsme_pecan.wsexpose(Lease, wtypes.text)
     def delete(self, lease_id):
@@ -341,3 +341,16 @@ class LeasesController(rest.RestController):
                 del filters[k]
 
         return filters
+
+    @staticmethod
+    def _lease_get_dict_with_added_info(lease, project_list=None, node_list=None):
+        resource = lease.resource_object()
+
+        idp = get_idp()
+        lease_dict = lease.to_dict()
+        lease_dict["project"] = idp.get_project_name(lease.project_id, project_list)
+        lease_dict["owner"] = idp.get_project_name(lease.owner_id, project_list)
+        lease_dict["resource"] = resource.get_name(node_list)
+        lease_dict["resource_class"] = resource.get_resource_class(node_list)
+        lease_dict["resource_properties"] = resource.get_properties(node_list)
+        return lease_dict
