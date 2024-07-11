@@ -25,8 +25,8 @@ from esi_leap.api.controllers import types
 from esi_leap.api.controllers.v1 import utils
 from esi_leap.common import constants
 from esi_leap.common import exception
-from esi_leap.common import ironic
 from esi_leap.common.idp import idp
+from esi_leap.common import ironic
 from esi_leap.common import statuses
 import esi_leap.conf
 from esi_leap.objects import lease as lease_obj
@@ -287,14 +287,15 @@ class LeasesController(rest.RestController):
         return filters
 
     @staticmethod
-    def _lease_get_dict_with_added_info(lease, project_list=None, node_list=None):
+    def _lease_get_dict_with_added_info(
+        lease, project_list=None, node_list=None):
         resource = lease.resource_object()
 
         lease_dict = lease.to_dict()
         lease_dict['project'] = idp.get_project_name(lease.project_id,
-                                                        project_list)
+                                                     project_list)
         lease_dict['owner'] = idp.get_project_name(lease.owner_id,
-                                                        project_list)
+                                                   project_list)
         lease_dict['resource'] = resource.get_name(node_list)
         lease_dict['resource_class'] = resource.get_resource_class(node_list)
         lease_dict['resource_properties'] = resource.get_properties(node_list)

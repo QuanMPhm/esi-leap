@@ -20,8 +20,8 @@ import wsmeext.pecan as wsme_pecan
 
 from esi_leap.api.controllers import base
 from esi_leap.api.controllers import types
-from esi_leap.common import ironic
 from esi_leap.common.idp import idp
+from esi_leap.common import ironic
 from esi_leap.common import statuses
 import esi_leap.conf
 from esi_leap.objects import lease as lease_obj
@@ -128,7 +128,7 @@ class NodesController(rest.RestController):
                      maintenance=str(node.maintenance),
                      owner=idp.get_project_name(node.owner, project_list),
                      lessee=idp.get_project_name(node.lessee,
-                                                      project_list),
+                                                 project_list),
                      future_offers=future_offers,
                      future_leases=f_lease_uuids)
 

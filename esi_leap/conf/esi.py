@@ -10,23 +10,16 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-import abc
+from oslo_config import cfg
+
+opts = [
+    cfg.StrOpt(
+        'idp_plugin_class',
+        default='esi_leap.common.idp.keystoneIDP.KeystoneIDP'),
+    ]
+
+api_group = cfg.OptGroup('esi', title='ESI Options')
 
 
-class BaseIDP(abc.ABC):
-
-    @abc.abstractmethod
-    def get_project_list():
-        pass
-
-    @abc.abstractmethod
-    def get_project_name(self, id, project_list=None):
-        pass
-
-    @abc.abstractmethod
-    def get_parent_project_id_tree(project_id):
-        pass
-
-    @abc.abstractmethod
-    def get_project_uuid_from_ident(project_ident):
-        pass
+def register_opts(conf):
+    conf.register_opts(opts, group=api_group)

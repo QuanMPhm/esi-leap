@@ -1,8 +1,9 @@
-import os
+from importlib import import_module
 
-from esi_leap.common.idp import keystoneIDP, dummyIDP
+import esi_leap.conf
 
-if os.environ.get('ESI_DEBUG', '') == 'True':
-    idp = dummyIDP.DummyIDP()
-else:
-    idp = keystoneIDP.KeystoneIDP()
+CONF = esi_leap.conf.CONF
+
+module_path, class_name = CONF.esi.idp_plugin_class.rsplit('.', 1)
+module = import_module(module_path)
+idp = getattr(module, class_name)()

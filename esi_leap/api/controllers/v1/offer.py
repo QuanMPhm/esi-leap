@@ -25,8 +25,8 @@ from esi_leap.api.controllers import types
 from esi_leap.api.controllers.v1 import lease
 from esi_leap.api.controllers.v1 import utils
 from esi_leap.common import exception
-from esi_leap.common import ironic
 from esi_leap.common.idp import idp
+from esi_leap.common import ironic
 from esi_leap.common import statuses
 import esi_leap.conf
 from esi_leap.objects import lease as lease_obj
@@ -284,9 +284,10 @@ class OffersController(rest.RestController):
         new_lease = lease_obj.Lease(**lease_dict)
         new_lease.create(request)
         return lease.Lease(**utils.lease_get_dict_with_added_info(new_lease))
-    
+
     @staticmethod
-    def _offer_get_dict_with_added_info(offer, project_list=None, node_list=None):
+    def _offer_get_dict_with_added_info(
+        offer, project_list=None, node_list=None):
         resource = offer.resource_object()
 
         o = offer.to_dict()
