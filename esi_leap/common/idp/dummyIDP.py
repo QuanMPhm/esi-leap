@@ -9,44 +9,71 @@
 #    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 #    License for the specific language governing permissions and limitations
 #    under the License.
+import sys
 
 from keystoneclient.v3.projects import Project
 from keystoneclient.v3.projects import ProjectManager
+from keystoneclient.v3.users import User
+from keystoneclient.v3.users import UserManager
 from oslo_utils import uuidutils
 
 from esi_leap.common import exception
 from esi_leap.common.idp import baseIDP
 
-dummy_project = Project(manager=ProjectManager, info={
-    'id': 1,
-    'name': 'test'
-})
-
 
 class DummyIDP(baseIDP.BaseIDP):
 
+    dummy_project_list: list[Project] = []
+    dummy_user_list: list[User] = []
+
     def get_parent_project_id_tree(self, project_id):
-        return [1]
+        project = self._get_project_obj_from_id(project_id)
+        project_ids = [project.id]
+        while project.parent_id is not None:
+            project = self._get_project_obj_from_id(project.parent_id)
+            project_ids.append(project.id)
+        return project_ids
 
     def get_project_uuid_from_ident(self, project_ident):
         if uuidutils.is_uuid_like(project_ident):
             return project_ident
         else:
-            if project_ident == "test":
-                return 1
+            for p in self.dummy_project_list:
+                if p.name == project_ident:
+                    return p.id
             raise exception.ProjectNoSuchName(name=project_ident)
 
     def get_project_list(self):
-        return [dummy_project]
+        return self.dummy_project_list
 
     def get_project_name(self, project_id, project_list=None):
-        if project_id == 1:
-            return 'test'
+        if project_id:
+            if project_list is None:
+                project = self._get_project_obj_from_id(project_id)
+            else:
+                project = next((p for p in project_list
+                                if getattr(p, 'id') == project_id),
+                               None)
+            return project.name if project else ''
         else:
             return ''
         
-    def add_project(id, name):
-        pass
+    def add_project(self, id, name, parent_id):
+        self.dummy_project_list.append(Project(ProjectManager, {
+            'id': id,
+            'name': name,
+            'parent_id': parent_id
+        }))
 
-    def add_user():
-        pass
+    def add_user(self, id, name, project_id):
+        self.dummy_user_list.append(User(UserManager, {
+            'id': id,
+            'name': name,
+            'project_id': project_id
+        }))
+
+    def _get_project_obj_from_id(self, project_id):
+        for p in self.dummy_project_list:
+            if p.id == project_id:
+                return p
+        sys.exit(f"No project with id {project_id} found")

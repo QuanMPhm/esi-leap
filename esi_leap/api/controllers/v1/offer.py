@@ -25,7 +25,7 @@ from esi_leap.api.controllers import types
 from esi_leap.api.controllers.v1 import lease
 from esi_leap.api.controllers.v1 import utils
 from esi_leap.common import exception
-from esi_leap.common.idp import idp
+from esi_leap.common.idp import get_idp
 from esi_leap.common import ironic
 from esi_leap.common import statuses
 import esi_leap.conf
@@ -107,6 +107,7 @@ class OffersController(rest.RestController):
         cdict = request.to_policy_values()
         utils.policy_authorize('esi_leap:offer:get_all', cdict, cdict)
 
+        idp = get_idp()
         if project_id is not None:
             project_id = idp.get_project_uuid_from_ident(project_id)
 
@@ -208,6 +209,7 @@ class OffersController(rest.RestController):
                                        offer_dict['resource_uuid'])
         offer_dict['resource_uuid'] = resource.get_uuid()
 
+        idp = get_idp()
         if 'lessee_id' in offer_dict:
             offer_dict['lessee_id'] = idp.get_project_uuid_from_ident(
                 offer_dict['lessee_id'])
@@ -290,6 +292,7 @@ class OffersController(rest.RestController):
         offer, project_list=None, node_list=None):
         resource = offer.resource_object()
 
+        idp = get_idp()
         o = offer.to_dict()
         o['availabilities'] = offer.get_availabilities()
         o['project'] = idp.get_project_name(offer.project_id, project_list)

@@ -20,7 +20,7 @@ import wsmeext.pecan as wsme_pecan
 
 from esi_leap.api.controllers import base
 from esi_leap.api.controllers import types
-from esi_leap.common.idp import idp
+from esi_leap.common.idp import get_idp
 from esi_leap.common import ironic
 from esi_leap.common import statuses
 import esi_leap.conf

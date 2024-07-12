@@ -25,7 +25,7 @@ from esi_leap.api.controllers import types
 from esi_leap.api.controllers.v1 import utils
 from esi_leap.common import constants
 from esi_leap.common import exception
-from esi_leap.common.idp import idp
+from esi_leap.common.idp import get_idp
 from esi_leap.common import ironic
 from esi_leap.common import statuses
 import esi_leap.conf

@@ -21,7 +21,7 @@ from esi_leap.api.controllers import base
 from esi_leap.api.controllers import types
 from esi_leap.api.controllers.v1 import utils
 from esi_leap.common import exception
-from esi_leap.common.idp import idp
+from esi_leap.common.idp import get_idp
 import esi_leap.conf
 from esi_leap.objects import event as event_obj
 from esi_leap.resource_objects import get_resource_object

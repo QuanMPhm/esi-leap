@@ -69,8 +69,7 @@ class TestLeasesController(test_api_base.APITestCase):
 
     @mock.patch('esi_leap.common.ironic.get_node_list')
     @mock.patch('esi_leap.common.keystone.get_project_list')
-    @mock.patch('esi_leap.api.controllers.v1.utils.'
-                'lease_get_dict_with_added_info')
+    @mock.patch('esi_leap.api.controllers.v1.lease.LeasesController._lease_get_dict_with_added_info')
     @mock.patch('esi_leap.objects.lease.Lease.get_all')
     def test_one(self, mock_ga, mock_lgdwai, mock_gpl, mock_gnl):
         mock_ga.return_value = [self.test_lease]
@@ -86,8 +85,7 @@ class TestLeasesController(test_api_base.APITestCase):
         mock_gnl.assert_called_once()
         mock_lgdwai.assert_called_once()
 
-    @mock.patch('esi_leap.api.controllers.v1.utils.'
-                'lease_get_dict_with_added_info')
+    @mock.patch('esi_leap.api.controllers.v1.lease.LeasesController._lease_get_dict_with_added_info')
     @mock.patch('esi_leap.api.controllers.v1.lease.get_resource_object')
     @mock.patch('esi_leap.common.keystone.get_project_uuid_from_ident')
     @mock.patch('oslo_utils.uuidutils.generate_uuid')
@@ -131,8 +129,7 @@ class TestLeasesController(test_api_base.APITestCase):
         self.assertEqual(return_data, request.json)
         self.assertEqual(http_client.CREATED, request.status_int)
 
-    @mock.patch('esi_leap.api.controllers.v1.utils.'
-                'lease_get_dict_with_added_info')
+    @mock.patch('esi_leap.api.controllers.v1.lease.LeasesController._lease_get_dict_with_added_info')
     @mock.patch('esi_leap.api.controllers.v1.lease.get_resource_object')
     @mock.patch('esi_leap.common.keystone.get_project_uuid_from_ident')
     @mock.patch('oslo_utils.uuidutils.generate_uuid')
@@ -176,8 +173,7 @@ class TestLeasesController(test_api_base.APITestCase):
         self.assertEqual(return_data, request.json)
         self.assertEqual(http_client.CREATED, request.status_int)
 
-    @mock.patch('esi_leap.api.controllers.v1.utils.'
-                'lease_get_dict_with_added_info')
+    @mock.patch('esi_leap.api.controllers.v1.lease.LeasesController._lease_get_dict_with_added_info')
     @mock.patch('esi_leap.api.controllers.v1.utils.'
                 'check_resource_lease_admin')
     @mock.patch('esi_leap.api.controllers.v1.lease.get_resource_object')
@@ -276,8 +272,7 @@ class TestLeasesController(test_api_base.APITestCase):
         mock_create.assert_not_called()
         self.assertEqual(http_client.FORBIDDEN, request.status_int)
 
-    @mock.patch('esi_leap.api.controllers.v1.utils.'
-                'lease_get_dict_with_added_info')
+    @mock.patch('esi_leap.api.controllers.v1.lease.LeasesController._lease_get_dict_with_added_info')
     @mock.patch('esi_leap.objects.lease.Lease.update')
     @mock.patch('esi_leap.api.controllers.v1.utils.'
                 'check_lease_policy_and_retrieve')
@@ -297,8 +292,7 @@ class TestLeasesController(test_api_base.APITestCase):
         mock_lgdwai.assert_called_once()
         self.assertEqual(http_client.OK, request.status_int)
 
-    @mock.patch('esi_leap.api.controllers.v1.utils.'
-                'lease_get_dict_with_added_info')
+    @mock.patch('esi_leap.api.controllers.v1.lease.LeasesController._lease_get_dict_with_added_info')
     @mock.patch('esi_leap.objects.lease.Lease.update')
     @mock.patch('esi_leap.api.controllers.v1.utils.'
                 'check_lease_policy_and_retrieve')
@@ -319,8 +313,7 @@ class TestLeasesController(test_api_base.APITestCase):
         mock_lgdwai.assert_not_called()
         self.assertEqual(http_client.INTERNAL_SERVER_ERROR, request.status_int)
 
-    @mock.patch('esi_leap.api.controllers.v1.utils.'
-                'lease_get_dict_with_added_info')
+    @mock.patch('esi_leap.api.controllers.v1.lease.LeasesController._lease_get_dict_with_added_info')
     @mock.patch('esi_leap.objects.lease.Lease.update')
     @mock.patch('esi_leap.api.controllers.v1.utils.'
                 'check_lease_policy_and_retrieve')
@@ -344,8 +337,7 @@ class TestLeasesController(test_api_base.APITestCase):
 
     @mock.patch('esi_leap.common.ironic.get_node_list')
     @mock.patch('esi_leap.common.keystone.get_project_list')
-    @mock.patch('esi_leap.api.controllers.v1.utils.'
-                'lease_get_dict_with_added_info')
+    @mock.patch('esi_leap.api.controllers.v1.lease.LeasesController._lease_get_dict_with_added_info')
     @mock.patch('esi_leap.api.controllers.v1.lease.LeasesController.'
                 '_lease_get_all_authorize_filters')
     @mock.patch('esi_leap.objects.lease.Lease.get_all')
@@ -374,8 +366,7 @@ class TestLeasesController(test_api_base.APITestCase):
 
     @mock.patch('esi_leap.common.ironic.get_node_list')
     @mock.patch('esi_leap.common.keystone.get_project_list')
-    @mock.patch('esi_leap.api.controllers.v1.utils.'
-                'lease_get_dict_with_added_info')
+    @mock.patch('esi_leap.api.controllers.v1.lease.LeasesController._lease_get_dict_with_added_info')
     @mock.patch('esi_leap.common.keystone.get_project_uuid_from_ident')
     @mock.patch('esi_leap.api.controllers.v1.lease.LeasesController.'
                 '_lease_get_all_authorize_filters')
@@ -407,8 +398,7 @@ class TestLeasesController(test_api_base.APITestCase):
 
     @mock.patch('esi_leap.common.ironic.get_node_list')
     @mock.patch('esi_leap.common.keystone.get_project_list')
-    @mock.patch('esi_leap.api.controllers.v1.utils.'
-                'lease_get_dict_with_added_info')
+    @mock.patch('esi_leap.api.controllers.v1.lease.LeasesController._lease_get_dict_with_added_info')
     @mock.patch('esi_leap.common.keystone.get_project_uuid_from_ident')
     @mock.patch('esi_leap.api.controllers.v1.lease.LeasesController.'
                 '_lease_get_all_authorize_filters')
@@ -442,8 +432,7 @@ class TestLeasesController(test_api_base.APITestCase):
 
     @mock.patch('esi_leap.common.ironic.get_node_list')
     @mock.patch('esi_leap.common.keystone.get_project_list')
-    @mock.patch('esi_leap.api.controllers.v1.utils.'
-                'lease_get_dict_with_added_info')
+    @mock.patch('esi_leap.api.controllers.v1.lease.LeasesController._lease_get_dict_with_added_info')
     @mock.patch('esi_leap.api.controllers.v1.lease.get_resource_object')
     @mock.patch('esi_leap.api.controllers.v1.lease.LeasesController.'
                 '_lease_get_all_authorize_filters')
@@ -477,8 +466,7 @@ class TestLeasesController(test_api_base.APITestCase):
 
     @mock.patch('esi_leap.common.ironic.get_node_list')
     @mock.patch('esi_leap.common.keystone.get_project_list')
-    @mock.patch('esi_leap.api.controllers.v1.utils.'
-                'lease_get_dict_with_added_info')
+    @mock.patch('esi_leap.api.controllers.v1.lease.LeasesController._lease_get_dict_with_added_info')
     @mock.patch('esi_leap.api.controllers.v1.lease.LeasesController.'
                 '_lease_get_all_authorize_filters')
     @mock.patch('esi_leap.objects.lease.Lease.get_all')
@@ -539,8 +527,7 @@ class TestLeasesController(test_api_base.APITestCase):
 
     @mock.patch('esi_leap.common.ironic.get_node_list')
     @mock.patch('esi_leap.common.keystone.get_project_list')
-    @mock.patch('esi_leap.api.controllers.v1.utils.'
-                'lease_get_dict_with_added_info')
+    @mock.patch('esi_leap.api.controllers.v1.lease.LeasesController._lease_get_dict_with_added_info')
     @mock.patch('esi_leap.api.controllers.v1.lease.get_resource_object')
     @mock.patch('esi_leap.api.controllers.v1.lease.LeasesController.'
                 '_lease_get_all_authorize_filters')

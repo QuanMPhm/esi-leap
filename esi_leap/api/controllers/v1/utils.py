@@ -16,7 +16,7 @@ from oslo_utils import uuidutils
 import datetime
 
 from esi_leap.common import exception
-from esi_leap.common.idp import idp
+from esi_leap.common.idp import get_idp
 from esi_leap.common import policy
 from esi_leap.objects import lease as lease_obj
 from esi_leap.objects import offer as offer_obj
@@ -140,6 +140,7 @@ def check_offer_lessee(cdict, offer):
     if offer.lessee_id is None or offer.project_id == project_id:
         return
 
+    idp = get_idp()
     if offer.lessee_id not in idp.get_parent_project_id_tree(project_id):
         resource_policy_authorize(
             'esi_leap:offer:offer_admin',

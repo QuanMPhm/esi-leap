@@ -4,6 +4,8 @@ import esi_leap.conf
 
 CONF = esi_leap.conf.CONF
 
-module_path, class_name = CONF.esi.idp_plugin_class.rsplit('.', 1)
-module = import_module(module_path)
-idp = getattr(module, class_name)()
+
+def get_idp():
+    module_path, class_name = CONF.esi.idp_plugin_class.rsplit('.', 1)
+    module = import_module(module_path)
+    return getattr(module, class_name)()

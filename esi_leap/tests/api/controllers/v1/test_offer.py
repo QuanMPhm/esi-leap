@@ -390,7 +390,7 @@ class TestOffersController(test_api_base.APITestCase):
         self.assertEqual(request, expected_resp)
 
     @mock.patch('esi_leap.common.ironic.get_node_list')
-    @mock.patch('esi_leap.common.keystone.get_project_list')
+    @mock.patch('esi_leap.common.idp.dummyIDP.DummyIDP.get_project_list')
     @mock.patch('esi_leap.api.controllers.v1.offer.OffersController._offer_get_dict_with_added_info')
     @mock.patch('esi_leap.objects.offer.Offer.get_all')
     def test_get_status_filter(self, mock_get_all, mock_ogdwai,
@@ -399,7 +399,6 @@ class TestOffersController(test_api_base.APITestCase):
         mock_ogdwai.side_effect = [
             _get_offer_response(self.test_offer, use_datetime=True),
             _get_offer_response(self.test_offer_2, use_datetime=True)]
-        mock_gpl.return_value = []
         mock_gnl.return_value = []
 
         expected_filters = {'status': [statuses.AVAILABLE]}
@@ -587,8 +586,7 @@ class TestOffersController(test_api_base.APITestCase):
     @mock.patch('esi_leap.api.controllers.v1.utils.check_offer_lessee')
     @mock.patch('esi_leap.api.controllers.v1.utils.'
                 'check_offer_policy_and_retrieve')
-    @mock.patch('esi_leap.api.controllers.v1.utils.'
-                'lease_get_dict_with_added_info')
+    @mock.patch('esi_leap.api.controllers.v1.offer.OffersController._offer_get_dict_with_added_info')
     def test_claim(self, mock_lgdwai, mock_copar, mock_col, mock_lease_create,
                    mock_generate_uuid):
         lease_uuid = '12345'
@@ -618,8 +616,7 @@ class TestOffersController(test_api_base.APITestCase):
     @mock.patch('esi_leap.api.controllers.v1.utils.check_offer_lessee')
     @mock.patch('esi_leap.api.controllers.v1.utils.'
                 'check_offer_policy_and_retrieve')
-    @mock.patch('esi_leap.api.controllers.v1.utils.'
-                'lease_get_dict_with_added_info')
+    @mock.patch('esi_leap.api.controllers.v1.offer.OffersController._offer_get_dict_with_added_info')
     def test_claim_parent_lease(self, mock_lgdwai, mock_copar, mock_col,
                                 mock_lease_create, mock_generate_uuid):
         lease_uuid = '12345'
