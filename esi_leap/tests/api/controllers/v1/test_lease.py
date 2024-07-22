@@ -25,6 +25,7 @@ from esi_leap.objects import lease as lease_obj
 from esi_leap.resource_objects.ironic_node import IronicNode
 from esi_leap.resource_objects.fake_node import FakeNode
 from esi_leap.tests.api import base as test_api_base
+from esi_leap.conf import CONF
 
 
 class TestLeasesController(test_api_base.APITestCase):
@@ -630,6 +631,7 @@ class TestLeaseControllersGetAllFilters(testtools.TestCase):
     def setUp(self):
         super(TestLeaseControllersGetAllFilters, self).setUp()
 
+        CONF.set_override("auth_enable", True, group="pecan")
         self.admin_ctx = ctx.RequestContext(project_id="adminid", roles=["admin"])
         self.owner_ctx = ctx.RequestContext(project_id="ownerid", roles=["owner"])
         self.lessee_ctx = ctx.RequestContext(project_id="lesseeid", roles=["lessee"])
