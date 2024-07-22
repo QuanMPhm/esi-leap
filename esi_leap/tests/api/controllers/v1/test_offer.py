@@ -200,7 +200,7 @@ class TestOffersController(test_api_base.APITestCase):
         self.assertEqual(http_client.CREATED, request.status_int)
 
     @mock.patch("esi_leap.api.controllers.v1.offer.get_resource_object")
-    @mock.patch("esi_leap.common.keystone.get_project_uuid_from_ident")
+    @mock.patch("esi_leap.common.idp.dummyIDP.DummyIDP.get_project_uuid_from_ident")
     @mock.patch("oslo_utils.uuidutils.generate_uuid")
     @mock.patch("esi_leap.api.controllers.v1.utils.check_resource_admin")
     @mock.patch("esi_leap.objects.offer.Offer.create")
@@ -370,7 +370,7 @@ class TestOffersController(test_api_base.APITestCase):
         self.assertEqual(http_client.FORBIDDEN, request.status_int)
 
     @mock.patch("esi_leap.common.ironic.get_node_list")
-    @mock.patch("esi_leap.common.keystone.get_project_list")
+    @mock.patch("esi_leap.common.idp.dummyIDP.DummyIDP.get_project_list")
     @mock.patch(
         "esi_leap.api.controllers.v1.offer.OffersController._offer_get_dict_with_added_info"
     )
@@ -401,7 +401,7 @@ class TestOffersController(test_api_base.APITestCase):
         self.assertEqual(request, expected_resp)
 
     @mock.patch("esi_leap.common.ironic.get_node_list")
-    @mock.patch("esi_leap.common.keystone.get_project_list")
+    @mock.patch("esi_leap.common.idp.dummyIDP.DummyIDP.get_project_list")
     @mock.patch(
         "esi_leap.api.controllers.v1.offer.OffersController._offer_get_dict_with_added_info"
     )
@@ -432,7 +432,7 @@ class TestOffersController(test_api_base.APITestCase):
         self.assertEqual(request, expected_resp)
 
     @mock.patch("esi_leap.common.ironic.get_node_list")
-    @mock.patch("esi_leap.common.keystone.get_project_list")
+    @mock.patch("esi_leap.common.idp.dummyIDP.DummyIDP.get_project_list")
     @mock.patch(
         "esi_leap.api.controllers.v1.offer.OffersController._offer_get_dict_with_added_info"
     )
@@ -463,8 +463,8 @@ class TestOffersController(test_api_base.APITestCase):
         self.assertEqual(request, expected_resp)
 
     @mock.patch("esi_leap.common.ironic.get_node_list")
-    @mock.patch("esi_leap.common.keystone.get_project_list")
-    @mock.patch("esi_leap.common.keystone.get_project_uuid_from_ident")
+    @mock.patch("esi_leap.common.idp.dummyIDP.DummyIDP.get_project_list")
+    @mock.patch("esi_leap.common.idp.dummyIDP.DummyIDP.get_project_uuid_from_ident")
     @mock.patch(
         "esi_leap.api.controllers.v1.offer.OffersController._offer_get_dict_with_added_info"
     )
@@ -502,7 +502,7 @@ class TestOffersController(test_api_base.APITestCase):
         self.assertEqual(request, expected_resp)
 
     @mock.patch("esi_leap.common.ironic.get_node_list")
-    @mock.patch("esi_leap.common.keystone.get_project_list")
+    @mock.patch("esi_leap.common.idp.dummyIDP.DummyIDP.get_project_list")
     @mock.patch("esi_leap.api.controllers.v1.offer.get_resource_object")
     @mock.patch(
         "esi_leap.api.controllers.v1.offer.OffersController._offer_get_dict_with_added_info"
@@ -544,7 +544,7 @@ class TestOffersController(test_api_base.APITestCase):
         self.assertEqual(request, expected_resp)
 
     @mock.patch("esi_leap.common.ironic.get_node_list")
-    @mock.patch("esi_leap.common.keystone.get_project_list")
+    @mock.patch("esi_leap.common.idp.dummyIDP.DummyIDP.get_project_list")
     @mock.patch(
         "esi_leap.api.controllers.v1.offer.OffersController._offer_get_dict_with_added_info"
     )
@@ -580,7 +580,7 @@ class TestOffersController(test_api_base.APITestCase):
         self.assertEqual(request, expected_resp)
 
     @mock.patch("esi_leap.common.ironic.get_node_list")
-    @mock.patch("esi_leap.common.keystone.get_project_list")
+    @mock.patch("esi_leap.common.idp.dummyIDP.DummyIDP.get_project_list")
     @mock.patch("esi_leap.api.controllers.v1.offer.get_resource_object")
     @mock.patch(
         "esi_leap.api.controllers.v1.offer.OffersController._offer_get_dict_with_added_info"
@@ -620,7 +620,7 @@ class TestOffersController(test_api_base.APITestCase):
         self.assertEqual(request, expected_resp)
 
     @mock.patch("esi_leap.common.ironic.get_node_list")
-    @mock.patch("esi_leap.common.keystone.get_project_list")
+    @mock.patch("esi_leap.common.idp.dummyIDP.DummyIDP.get_project_list")
     @mock.patch(
         "esi_leap.api.controllers.v1.offer.OffersController._offer_get_dict_with_added_info"
     )
