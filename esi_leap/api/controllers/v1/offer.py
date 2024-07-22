@@ -311,7 +311,9 @@ class OffersController(rest.RestController):
 
         new_lease = lease_obj.Lease(**lease_dict)
         new_lease.create(request)
-        return lease.Lease(**utils.lease_get_dict_with_added_info(new_lease))
+        return lease.Lease(
+            **lease.LeasesController._lease_get_dict_with_added_info(new_lease)
+        )
 
     @staticmethod
     def _offer_get_dict_with_added_info(offer, project_list=None, node_list=None):

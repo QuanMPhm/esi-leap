@@ -715,7 +715,9 @@ class TestOffersController(test_api_base.APITestCase):
     @mock.patch("esi_leap.objects.lease.Lease.create")
     @mock.patch("esi_leap.api.controllers.v1.utils.check_offer_lessee")
     @mock.patch("esi_leap.api.controllers.v1.utils." "check_offer_policy_and_retrieve")
-    @mock.patch("esi_leap.api.controllers.v1.utils." "lease_get_dict_with_added_info")
+    @mock.patch(
+        "esi_leap.api.controllers.v1.lease.LeasesController._lease_get_dict_with_added_info"
+    )
     def test_claim_parent_lease(
         self, mock_lgdwai, mock_copar, mock_col, mock_lease_create
     ):

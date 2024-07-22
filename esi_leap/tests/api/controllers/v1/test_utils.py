@@ -19,6 +19,7 @@ from oslo_utils import uuidutils
 import testtools
 
 from esi_leap.api.controllers.v1 import utils
+from esi_leap.api.controllers.v1 import lease as lease_controller
 from esi_leap.api.controllers.v1 import offer as offer_controller
 from esi_leap.common import exception
 from esi_leap.common import policy
@@ -27,12 +28,6 @@ from esi_leap.objects import lease
 from esi_leap.objects import offer
 from esi_leap.resource_objects.fake_node import FakeNode
 from esi_leap.conf import CONF
-
-
-CONF.set_override(
-    "idp_plugin_class", "esi_leap.common.idp.dummyIDP.DummyIDP", group="esi"
-)
-
 
 admin_ctx = ctx.RequestContext(project_id="adminid", roles=["admin"])
 
@@ -495,6 +490,12 @@ class TestLeasePolicyAndRetrieveUtils(testtools.TestCase):
 
 
 class TestOfferLesseeUtils(testtools.TestCase):
+    def setUp(self):
+        super(TestOfferLesseeUtils, self).setUp()
+        CONF.set_override(
+            "idp_plugin_class", "esi_leap.common.idp.dummyIDP.DummyIDP", group="esi"
+        )
+
     @mock.patch("esi_leap.api.controllers.v1.utils.policy_authorize")
     @mock.patch("esi_leap.common.idp.dummyIDP.DummyIDP.get_parent_project_id_tree")
     def test_check_offer_lessee_no_lessee_id(self, mock_gppit, mock_authorize):
@@ -695,11 +696,15 @@ class TestLeaseGetDictWithAddedInfoUtils(testtools.TestCase):
     @mock.patch("esi_leap.common.idp.dummyIDP.DummyIDP.get_project_name")
     @mock.patch("esi_leap.objects.lease.get_resource_object")
     def test_lease_get_dict_with_added_info(self, mock_gro, mock_gpn, mock_gn):
+        print("--- in test_lease_get_dict_with_added_info")
+        print("conf idp set as: ", CONF.esi.idp_plugin_class)
         mock_gro.return_value = FakeNode("111")
         mock_gpn.return_value = "project-name"
         mock_gn.return_value = "resource-name"
 
-        output_dict = utils.lease_get_dict_with_added_info(self.test_lease)
+        output_dict = lease_controller.LeasesController._lease_get_dict_with_added_info(
+            self.test_lease
+        )
 
         expected_output_dict = self.test_lease.to_dict()
         expected_output_dict["resource"] = "resource-name"
